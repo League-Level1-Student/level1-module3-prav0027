@@ -4,6 +4,8 @@
  */
 
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -11,7 +13,10 @@ import java.net.URL;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import javazoom.jl.player.advanced.AdvancedPlayer;
@@ -19,11 +24,18 @@ import javazoom.jl.player.advanced.AdvancedPlayer;
 /* 1. Download the JavaZoom jar from here: http://bit.ly/javazoom
  * 2. Right click your project and add it as an External JAR (Under Java Build Path > Libraries).*/
 
-public class Jukebox implements Runnable {
+public class Jukebox implements Runnable, ActionListener {
 
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Jukebox());
+		
 	}
+	JFrame frame = new JFrame();
+	JPanel panel= new JPanel();
+	JButton jingleBells = new JButton();
+	JButton housetop = new JButton();
+	Song song = new Song("Jingle Bells 3.mp3");
+	Song song1 = new Song("Up on a Housetop.mp3");
 
            public void run() {
 
@@ -31,7 +43,6 @@ public class Jukebox implements Runnable {
 		// 4. Create a Song
 
 		// 5. Play the Song
-
 		/*
 		 * 6. Create a user interface for your Jukebox so that the user can to
 		 * choose which song to play. You can use can use a different button for
@@ -39,12 +50,34 @@ public class Jukebox implements Runnable {
 		 * cover is clicked, stop the currently playing song, and play the one
 		 * that was selected.
 		 */
+frame.add(panel);
+frame.setVisible(true);
+jingleBells.setText("Jingle Bells");
+housetop.setText("Up on the Housetop");
+jingleBells.addActionListener(this);
+housetop.addActionListener(this);
+panel.add(jingleBells);
+panel.add(housetop);
           }
 	/* Use this method to add album covers to your Panel. */
 	private JLabel loadImage(String fileName) {
 		URL imageURL = getClass().getResource(fileName);
 		Icon icon = new ImageIcon(imageURL);
 		return new JLabel(icon);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		JButton buttonPressed = (JButton) e.getSource();
+		if(buttonPressed==jingleBells) {
+			song.play();
+			song1.stop();
+		}
+		else if(buttonPressed==housetop) {
+			song1.play();
+			song.stop();
+		}
 	}
 
 }

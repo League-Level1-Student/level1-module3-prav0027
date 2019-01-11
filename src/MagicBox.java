@@ -11,14 +11,16 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 public class MagicBox extends JPanel implements Runnable, MouseListener {
-
+MediaPalace mp = new MediaPalace();
 	/*
 	 * We are going to hide secrets within the magic box. 
 	 * When the user clicks on a secret place, stuff will happen.
@@ -34,8 +36,6 @@ public class MagicBox extends JPanel implements Runnable, MouseListener {
 
 	public static void main(String[] args) throws Exception {
 		SwingUtilities.invokeLater(new MagicBox());
-	
-		
 		
 	}
 
@@ -56,6 +56,7 @@ public class MagicBox extends JPanel implements Runnable, MouseListener {
 		frame.pack();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
+		frame.addMouseListener(this);
 	}
 
 	private void loadBackgroundImage() throws Exception {
@@ -75,7 +76,26 @@ public class MagicBox extends JPanel implements Runnable, MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+		System.out.println(e.getX()+", "+ e.getY());
+		if(e.getX()<=350&&e.getX()>=280&&e.getY()<=630&&e.getY()>=550) {
+			mp.speak("hello");
+		}
+		else if(e.getX()>=500&&e.getX()<=530&&e.getY()>=100&&e.getY()<=140) {
+			mp.playSoundFromInternet("https://www.youtube.com/watch?v=3CWJNqyub3o");
+		}
+		else if(e.getX()>=70&&e.getX()<=100&&e.getY()>=70&&e.getY()<=100) {
+			JLabel ImageLabel = null;
+			try {
+				ImageLabel = mp.loadImageFromTheInternet("https://cdn.shopify.com/s/files/1/0986/5790/products/HelloDecal-PRINT_grande.png?v=1481472974");
+			} catch (MalformedURLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			JFrame ImageJFrame = new JFrame();
+			ImageJFrame.setVisible(true);
+			ImageJFrame.add(ImageLabel);
+			ImageJFrame.pack();
+		}
 	}
 
 	@Override
